@@ -1,0 +1,4 @@
+dash
+pandas
+openpyxl  # Pour lire les fichiers Excel
+gunicorn  # Serveur pour exécuter l'app sur Render
