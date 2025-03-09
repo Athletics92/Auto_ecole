@@ -35,24 +35,18 @@ print("Année actuelle =", current_year)
 # In[8]:
 
 
-# Chemin du fichier Excel
-file_path = r"C:/Users/gaeta/Documents/03_ PYTHON/16_AUTO_ECOLE/02_INPUTS/_20250308_inputs_auto_ecole.xlsx"
-print(file_path)
 
+# Charger le fichier Excel depuis un chemin relatif ou en ligne
+file_path = "02_INPUTS/_20250308_inputs_auto_ecole.xlsx"
 
-# In[9]:
-
-
-# Vérification de l'existence du fichier
+# Vérification que le fichier existe
 if not os.path.exists(file_path):
     raise FileNotFoundError(f"Le fichier {file_path} est introuvable !")
 
+# Charger les données Excel
+df = pd.read_excel(file_path, sheet_name="Feuil1")
 
-# In[13]:
 
-
-# Import du fichier Excel 
-df = pd.read_excel(file_path,sheet_name="Feuil1")
 
 df["Délais_inter_lecon"]=df["Délais_inter_lecon"].astype(int)
 df=df.sort_values(by=["SCORE"],ascending=False)
