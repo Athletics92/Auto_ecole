@@ -102,17 +102,24 @@ app.layout = dbc.Container(
             ),
             className="mb-4"
         ),
-
-        # Tableau de données
+        
+        # Tableau de données avec filtres et tri
         dbc.Row(
             dbc.Col(
                 dash_table.DataTable(
+                    id='data-table',
                     data=df.to_dict('records'),
-                    columns=[{"name": i.replace("_", " "), "id": i} for i in df[["Prénom","Nom","Date_signature","Date_obtention_code","Nb_presentations_code","Nb_lecons_conduite","Nb_heures_conduite","Anciennete_premiere_lecon","Anciennete_derniere_lecon","Délais_inter_lecon","Flag_deja_presente","SCORE"]]],
+                    columns=[
+                        {"name": i.replace("_", " "), "id": i, "deletable": False, "selectable": False} 
+                        for i in df.columns
+                    ],
+                    filter_action="native",  # Ajout du filtre par colonne
+                    sort_action="native",  # Activation du tri
+                    sort_mode="multi",  # Permettre le tri sur plusieurs colonnes
                     style_table={"overflowX": "auto", "width": "100%"},
                     style_header={"backgroundColor": "#d3d3d3", "fontWeight": "bold", "textAlign": "center", "fontSize": "0.75rem", "whiteSpace": "normal"},
                     style_data={"backgroundColor": "#d3d3d3", "color": "black", "textAlign": "center", "fontSize": "0.9rem"},
-                    page_size=10
+                    page_size=10  # Afficher 10 lignes avec pagination
                 ),
                 width=12
             )
