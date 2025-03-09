@@ -69,7 +69,7 @@ df.head()
 # Initialisation de l'application Dash avec Bootstrap
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-df = pd.DataFrame(df).head(10)  # Afficher uniquement les 10 premières lignes
+#df = pd.DataFrame(df).head(10)  # Afficher uniquement les 10 premières lignes
 
 df=df[["Prénom","Nom","Date_naissance","Date_signature","Date_obtention_code","Nb_presentations_code","Nb_lecons_conduite","Nb_heures_conduite","Anciennete_premiere_lecon","Anciennete_derniere_lecon","Délais_inter_lecon","Flag_deja_presente","SCORE"]]
 
