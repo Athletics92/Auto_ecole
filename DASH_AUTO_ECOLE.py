@@ -71,6 +71,10 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 df = pd.DataFrame(df).head(10)  # Afficher uniquement les 10 premières lignes
 
+df=df[["Prénom","Nom","Date_naissance","Date_signature","Date_obtention_code","Nb_presentations_code","Nb_lecons_conduite","Nb_heures_conduite","Anciennete_premiere_lecon","Anciennete_derniere_lecon","Délais_inter_lecon","Flag_deja_presente","SCORE"]]
+
+df["SCORE"]=(df["SCORE"]*100).astype(int).astype(str) + '%'
+
 # Conversion explicite des dates après la création du DataFrame
 #date_columns = [
 #    "Date_naissance", "Date_signature", "Date_obtention_code",
@@ -104,7 +108,7 @@ app.layout = dbc.Container(
             dbc.Col(
                 dash_table.DataTable(
                     data=df.to_dict('records'),
-                    columns=[{"name": i.replace("_", " "), "id": i} for i in df.columns[3:]],
+                    columns=[{"name": i.replace("_", " "), "id": i} for i in df[["Prénom","Nom","Date_signature","Date_obtention_code","Nb_presentations_code","Nb_lecons_conduite","Nb_heures_conduite","Anciennete_premiere_lecon","Anciennete_derniere_lecon","Délais_inter_lecon","Flag_deja_presente","SCORE"]]],
                     style_table={"overflowX": "auto", "width": "100%"},
                     style_header={"backgroundColor": "#d3d3d3", "fontWeight": "bold", "textAlign": "center", "fontSize": "0.75rem", "whiteSpace": "normal"},
                     style_data={"backgroundColor": "#d3d3d3", "color": "black", "textAlign": "center", "fontSize": "0.9rem"},
