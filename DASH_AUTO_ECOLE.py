@@ -139,10 +139,22 @@ app.layout = dbc.Container(
 def update_banner(filtered_data):
     if filtered_data and len(filtered_data) > 0:
         first_row = filtered_data[0]
+        score_value = int(first_row["SCORE"].replace('%', ''))
+        
+        # Déterminer l'image en fonction du score
+        if 75 <= score_value <= 100:
+            image_src = "/assets/feu_vert.jpg"
+        elif 50 <= score_value < 75:
+            image_src = "/assets/feu_orange.jpg"
+        else:
+            image_src = "/assets/feu_rouge.jpg"
+        
         return [
             html.Span(first_row["Prénom"], className="info-box"),
             html.Span(first_row["Nom"], className="info-box"),
             html.Span(first_row["Date_naissance"], className="info-box", style={"margin": "0 10px"}),
+            html.Span(first_row["SCORE"], className="info-box", style={"margin": "0 10px"}),
+            html.Img(src=image_src, style={"height": "30px", "width": "30px", "margin-left": "5px"})
         ]
     return ""  # Affichage vide si aucune donnée
 
