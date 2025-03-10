@@ -87,16 +87,13 @@ df["SCORE"]=(df["SCORE"]*100).astype(int).astype(str) + '%'
 # Mise en page de l'application
 app.layout = dbc.Container(
     [
-        # Bandeau supérieur
+        # Bandeau supérieur dynamique
         dbc.Row(
             dbc.Col(
                 html.Div(
-                    [
-                        html.Span(df.iloc[0]["Prénom"], className="info-box"),
-                        html.Span(df.iloc[0]["Nom"], className="info-box"),
-                        html.Span(df.iloc[0]["Date_naissance"], className="info-box"),
-                    ],
-                    className="header-banner"
+                    id="header-banner",
+                    className="header-banner",
+                    style={"margin-top": "20px", "border": "1px solid black", "backgroundColor": "#d0e4ff"}  # Fond bleu clair
                 ),
                 width=12
             ),
@@ -117,16 +114,37 @@ app.layout = dbc.Container(
                     sort_action="native",  # Activation du tri
                     sort_mode="multi",  # Permettre le tri sur plusieurs colonnes
                     style_table={"overflowX": "auto", "width": "100%"},
-                    style_header={"backgroundColor": "#d3d3d3", "fontWeight": "bold", "textAlign": "center", "fontSize": "0.75rem", "whiteSpace": "normal"},
-                    style_data={"backgroundColor": "#d3d3d3", "color": "black", "textAlign": "center", "fontSize": "0.9rem"},
+                    style_header={"backgroundColor": "#e0e0e0", "fontWeight": "bold", "textAlign": "center", "fontSize": "0.75rem", "whiteSpace": "normal"},
+                    style_data_conditional=[
+                        {"if": {"row_index": "odd"}, "backgroundColor": "#d0e4ff"},  # Une ligne sur deux en bleu clair
+                        {"if": {"row_index": "even"}, "backgroundColor": "white"}  # Fond blanc sinon
+                    ],
+                    style_data={"color": "black", "textAlign": "center", "fontSize": "0.9rem"},
                     page_size=10  # Afficher 10 lignes avec pagination
                 ),
                 width=12
             )
         )
     ],
-    fluid=True  # Assure la responsivité
+    fluid=True,  # Assure la responsivité
+    style={"backgroundColor": "white", "minHeight": "100vh"}  # Fond global blanc + fond sous le tableau blanc
+    #style={"background-image": 'url("/assets/fonds_page.jpeg")', "background-size": "cover", "background-position": "center bottom"}  # Image de fond
 )
+
+# Callback pour mettre à jour le bandeau en fonction du premier résultat filtré
+@app.callback(
+    Output("header-banner", "children"),
+    Input("data-table", "derived_virtual_data")
+)
+def update_banner(filtered_data):
+    if filtered_data and len(filtered_data) > 0:
+        first_row = filtered_data[0]
+        return [
+            html.Span(first_row["Prénom"], className="info-box"),
+            html.Span(first_row["Nom"], className="info-box"),
+            html.Span(first_row["Date_naissance"], className="info-box", style={"margin": "0 10px"}),
+        ]
+    return ""  # Affichage vide si aucune donnée
 
 # CSS pour la mise en forme responsive
 app.index_string = '''
