@@ -44,7 +44,7 @@ if not os.path.exists(file_path):
     raise FileNotFoundError(f"Le fichier {file_path} est introuvable !")
 
 # Charger les données Excel
-df = pd.read_excel(file_path, sheet_name="Feuil1")
+df = pd.read_excel(file_path, sheet_name="DATABASE")
 
 
 
